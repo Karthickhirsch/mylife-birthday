@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Moment Only For You, Anusiya 💍</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gold: #ffd88a;
+    --gold-deep: #c9834c;
+    --rose: #ffb3c8;
+    --cream: #fff3e0;
+    --dark: #0a0005;
+    --dark2: #0d0008;
+    --purple: #16213e;
+  }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--dark);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    cursor: none;
+  }
+
+  /* ===== CURSOR ===== */
+  .cursor-dot {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: rgba(255,200,120,0.9);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 12px rgba(255,200,100,0.6);
+    transition: width 0.2s, height 0.2s;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 28px;
+    height: 28px;
+    border: 1px solid rgba(255,200,120,0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99998;
+    transform: translate(-50%, -50%);
+    transition: left 0.12s ease, top 0.12s ease, width 0.2s, height 0.2s;
+  }
+
+  /* ===== SCENES ===== */
+  .scene {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1.8s ease;
+    z-index: 10;
+  }
+  .scene.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .scene.exit {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* ===== PARTICLES LAYER ===== */
+  #particles-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .petal {
+    position: absolute;
+    pointer-events: none;
+    animation: petalFall linear forwards;
+    opacity: 0;
+  }
+  @keyframes petalFall {
+    0% { opacity: 0; transform: translateY(-40px) rotate(0deg); }
+    8% { opacity: 0.85; }
+    88% { opacity: 0.6; }
+    100% { opacity: 0; transform: translateY(110vh) rotate(var(--rot, 540deg)) translateX(var(--drift, 60px)); }
+  }
+
+  .star-twinkle {
+    position: absolute;
+    pointer-events: none;
+    animation: starBlink ease-in-out infinite alternate;
+  }
+  @keyframes starBlink {
+    from { opacity: 0.08; transform: scale(0.7); }
+    to { opacity: 0.9; transform: scale(1.2); }
+  }
+
+  .fw-particle {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9000;
+    animation: fwExplode ease-out forwards;
+  }
+  @keyframes fwExplode {
+    from { opacity: 1; transform: translate(0, 0) scale(1); }
+    to { opacity: 0; transform: translate(var(--fx), var(--fy)) scale(0.3); }
+  }
+
+  /* ===== SCENE 1 — INTRO ===== */
+  #scene-intro {
+    background: radial-gradient(ellipse at 50% 90%, #1c0012 0%, #0e0008 50%, #050002 100%);
+    flex-direction: column;
+    text-align: center;
+    gap: 0;
+  }
+
+  .candle-row {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 14px;
+    padding-bottom: 0;
+  }
+
+  .candle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: candleWobble 3s ease-in-out infinite alternate;
+  }
+  @keyframes candleWobble {
+    from { transform: translateY(0) scaleX(1); }
+    to { transform: translateY(-2px) scaleX(1.01); }
+  }
+
+  .candle-flame {
+    width: 9px;
+    height: 18px;
+    background: radial-gradient(ellipse at 50% 80%, #fffcee, #ffdd44, #ff7700, transparent 80%);
+    border-radius: 50% 50% 30% 30%;
+    box-shadow: 0 0 12px 4px rgba(255,200,60,0.45), 0 0 25px 8px rgba(255,100,0,0.18);
+    transform-origin: bottom center;
+    animation: flameDance 1.3s ease-in-out infinite alternate;
+  }
+  @keyframes flameDance {
+    0%   { transform: scaleX(1)    scaleY(1)    skewX(0deg);   }
+    25%  { transform: scaleX(0.82) scaleY(1.12) skewX(3deg);   }
+    50%  { transform: scaleX(1.12) scaleY(0.88) skewX(-4deg);  }
+    75%  { transform: scaleX(0.9)  scaleY(1.06) skewX(2deg);   }
+    100% { transform: scaleX(0.88) scaleY(1.08) skewX(-2deg);  }
+  }
+
+  .candle-body {
+    width: 11px;
+    background: linear-gradient(to right, #f0dfc0 0%, #fff9ed 45%, #e6d09c 100%);
+    border-radius: 2px 2px 1px 1px;
+  }
+  .candle-drip {
+    width: 13px;
+    height: 5px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 0 0 4px 4px;
+  }
+
+  .intro-center {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 180px;
+    animation: fadeInUp 2s ease 0.4s both;
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .intro-name {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(42px, 8vw, 90px);
+    color: var(--gold);
+    letter-spacing: 8px;
+    text-shadow: 0 0 50px rgba(255,200,100,0.5), 0 0 100px rgba(255,160,60,0.2);
+    animation: namePulse 4s ease-in-out infinite alternate;
+  }
+  @keyframes namePulse {
+    from { text-shadow: 0 0 40px rgba(255,200,100,0.4), 0 0 80px rgba(255,160,60,0.15); }
+    to   { text-shadow: 0 0 70px rgba(255,220,100,0.7), 0 0 120px rgba(255,180,60,0.3); }
+  }
+
+  .intro-tagline {
+    font-size: clamp(13px, 2vw, 18px);
+    color: rgba(255,220,180,0.55);
+    letter-spacing: 5px;
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .divider-line {
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255,200,120,0.4), transparent);
+  }
+
+  .begin-btn {
+    background: transparent;
+    border: 1px solid rgba(255,200,120,0.35);
+    color: rgba(255,230,180,0.75);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    letter-spacing: 5px;
+    padding: 14px 44px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    animation: fadeInUp 2s ease 2.2s both;
+  }
+  .begin-btn:hover {
+    background: rgba(255,200,120,0.08);
+    border-color: rgba(255,200,120,0.75);
+    color: var(--cream);
+    box-shadow: 0 0 40px rgba(255,200,100,0.18);
+    letter-spacing: 6px;
+  }
+
+  /* ===== SCENE 2 — PROPOSAL ===== */
+  #scene-proposal {
+    background: radial-gradient(ellipse at 50% 100%, #200015 0%, #0e0008 45%, #060003 100%);
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .spotlight-cone {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 100%;
+    background: radial-gradient(ellipse at 50% -10%, rgba(255,220,150,0.13) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .floor-ellipse {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 280px;
+    height: 50px;
+    background: radial-gradient(ellipse, rgba(255,180,100,0.18) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .proposal-stage {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .person-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    animation: personReveal 1.8s cubic-bezier(0.23,1,0.32,1) 0.3s both;
+  }
+  @keyframes personReveal {
+    from { opacity: 0; transform: scale(0.85) translateY(40px); }
+    to   { opacity: 1; transform: scale(1)    translateY(0); }
+  }
+
+  .person-svg {
+    width: clamp(210px, 32vw, 340px);
+    height: auto;
+    filter: drop-shadow(0 0 35px rgba(255,140,100,0.28)) drop-shadow(0 15px 25px rgba(0,0,0,0.9));
+  }
+
+  .floating-hearts-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .heart-float {
+    position: absolute;
+    animation: heartRise ease-out forwards;
+    pointer-events: none;
+    font-size: 18px;
+  }
+  @keyframes heartRise {
+    0%   { opacity: 0; transform: translateY(0)     scale(0.5); }
+    15%  { opacity: 1; transform: translateY(-18px)  scale(1); }
+    100% { opacity: 0; transform: translateY(-140px) scale(0.7) translateX(var(--hx,0)); }
+  }
+
+  .proposal-words-block {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 20px 30px 30px;
+    background: linear-gradient(to top, rgba(6,0,3,0.9) 40%, transparent);
+    z-index: 15;
+    animation: slideUp 1.2s ease 1.2s both;
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .proposal-quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(17px, 3vw, 32px);
+    color: rgba(255,245,225,0.92);
+    text-shadow: 0 0 40px rgba(255,200,100,0.5), 0 2px 15px rgba(0,0,0,0.9);
+    line-height: 1.55;
+    letter-spacing: 0.5px;
+    margin-bottom: 18px;
+  }
+
+  .pq-name { color: var(--gold); font-style: italic; }
+
+  .next-btn {
+    background: transparent;
+    border: 1px solid rgba(255,200,120,0.3);
+    color: rgba(255,220,170,0.7);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    letter-spacing: 4px;
+    padding: 10px 28px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 1px;
+  }
+  .next-btn:hover {
+    background: rgba(255,200,120,0.08);
+    border-color: rgba(255,200,120,0.7);
+    color: var(--cream);
+  }
+
+  /* ===== SCENE 3 — RING ===== */
+  #scene-ring {
+    background: radial-gradient(ellipse at 50% 60%, #1c0018 0%, #09000a 65%);
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .ring-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    perspective: 900px;
+  }
+
+  .box-3d-wrapper {
+    transform-style: preserve-3d;
+    animation: boxHover 3.5s ease-in-out infinite alternate;
+  }
+  @keyframes boxHover {
+    from { transform: rotateX(6deg) translateY(0px); }
+    to   { transform: rotateX(6deg) translateY(-14px); }
+  }
+
+  .ring-box {
+    position: relative;
+    width: clamp(130px, 20vw, 200px);
+    height: clamp(65px, 10vw, 100px);
+    background: linear-gradient(145deg, #1a1a30 0%, #16213e 60%, #0f3460 100%);
+    border-radius: 4px;
+    border: 1px solid rgba(180,160,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+      0 0 70px rgba(160,120,255,0.35),
+      0 0 140px rgba(160,120,255,0.15),
+      inset 0 1px 0 rgba(255,255,255,0.08);
+    overflow: visible;
+  }
+
+  .ring-box::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 55%);
+    border-radius: 4px;
+    pointer-events: none;
+  }
+
+  .ring-lid {
+    position: absolute;
+    bottom: 100%;
+    left: -1px;
+    right: -1px;
+    height: clamp(58px, 9vw, 90px);
+    background: linear-gradient(145deg, #16213e 0%, #0f3460 100%);
+    border-radius: 4px 4px 0 0;
+    border: 1px solid rgba(180,160,255,0.2);
+    border-bottom: none;
+    transform-origin: bottom center;
+    animation: lidOpen 1.8s cubic-bezier(0.25,0.46,0.45,0.94) 0.6s both;
+    box-shadow: 0 -12px 35px rgba(160,120,255,0.22);
+  }
+  @keyframes lidOpen {
+    from { transform: rotateX(0deg); }
+    to   { transform: rotateX(-115deg); }
+  }
+  .ring-lid::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, transparent 60%);
+    border-radius: 4px 4px 0 0;
+    pointer-events: none;
+  }
+
+  .ring-interior {
+    width: 72%;
+    height: 75%;
+    background: linear-gradient(145deg, #f5e8d5, #fff4ea, #f0d9c2);
+    border-radius: 4px 4px 60% 60% / 4px 4px 30px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: inset 0 3px 10px rgba(0,0,0,0.15);
+  }
+
+  /* 3D Ring */
+  .ring-3d-wrap {
+    position: relative;
+    width: clamp(44px, 7vw, 68px);
+    height: clamp(44px, 7vw, 68px);
+    animation: ringRock 2.5s ease-in-out infinite alternate;
+  }
+  @keyframes ringRock {
+    from { transform: rotateY(-15deg) rotateX(5deg); filter: brightness(1); }
+    to   { transform: rotateY(15deg)  rotateX(5deg); filter: brightness(1.35); }
+  }
+
+  .ring-body {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: clamp(6px, 1vw, 9px) solid transparent;
+    background:
+      linear-gradient(white, white) padding-box,
+      linear-gradient(135deg, #b8860b, #ffd700, #ffe680, #ffd700, #b8860b) border-box;
+  }
+  .ring-body::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.3) 0%, transparent 60%);
+  }
+
+  .diamond-gem {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 14px;
+    background: linear-gradient(145deg, #eafaff 0%, #ffffff 30%, #cce8ff 65%, #90d0ff 100%);
+    clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+    box-shadow: 0 0 18px 6px rgba(150,220,255,0.85), 0 0 35px 10px rgba(150,200,255,0.4);
+  }
+
+  .gem-spark {
+    position: absolute;
+    border-radius: 50%;
+    background: white;
+    animation: sparkPop 1.8s ease-in-out infinite;
+  }
+  .gem-spark:nth-child(1) { width:3px; height:3px; top:-18px; left:50%; transform:translateX(-50%); animation-delay:0s;    box-shadow: 0 0 8px 4px rgba(255,255,255,0.9); }
+  .gem-spark:nth-child(2) { width:2px; height:2px; top:-12px; right:-4px; animation-delay:0.5s; box-shadow: 0 0 6px 3px rgba(255,255,255,0.8); }
+  .gem-spark:nth-child(3) { width:2px; height:2px; top:-12px; left:-4px;  animation-delay:1s;   box-shadow: 0 0 6px 3px rgba(255,255,255,0.8); }
+  .gem-spark:nth-child(4) { width:2px; height:2px; top:2px; right:-8px; animation-delay:0.8s; box-shadow: 0 0 6px 3px rgba(200,240,255,0.8); }
+
+  @keyframes sparkPop {
+    0%,100% { opacity:0; transform:scale(0); }
+    50%      { opacity:1; transform:scale(1); }
+  }
+
+  .ring-glow-orb {
+    position: absolute;
+    inset: -24px;
+    background: radial-gradient(ellipse, rgba(255,215,100,0.28) 0%, rgba(180,120,255,0.12) 50%, transparent 70%);
+    border-radius: 50%;
+    animation: orbPulse 2.2s ease-in-out infinite alternate;
+  }
+  @keyframes orbPulse {
+    from { transform: scale(0.85); opacity: 0.5; }
+    to   { transform: scale(1.15); opacity: 1; }
+  }
+
+  .ring-label {
+    text-align: center;
+  }
+  .ring-label h2 {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(22px, 4vw, 44px);
+    color: var(--gold);
+    text-shadow: 0 0 35px rgba(255,185,80,0.55);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .ring-label p {
+    font-size: clamp(13px, 1.8vw, 17px);
+    color: rgba(255,215,170,0.6);
+    font-style: italic;
+    letter-spacing: 2px;
+  }
+
+  .answer-row {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn-yes {
+    background: linear-gradient(135deg, #c9834c 0%, #e8a86a 60%, #d4905a 100%);
+    border: none;
+    color: #fff8f0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(16px, 2.5vw, 22px);
+    letter-spacing: 4px;
+    padding: 15px 55px;
+    cursor: pointer;
+    border-radius: 2px;
+    box-shadow: 0 0 35px rgba(200,130,80,0.45), 0 6px 20px rgba(0,0,0,0.6);
+    transition: all 0.3s ease;
+    animation: yesPulse 2.5s ease-in-out infinite alternate;
+  }
+  @keyframes yesPulse {
+    from { box-shadow: 0 0 25px rgba(200,130,80,0.35), 0 5px 15px rgba(0,0,0,0.5); }
+    to   { box-shadow: 0 0 60px rgba(255,200,100,0.65), 0 5px 25px rgba(0,0,0,0.5); }
+  }
+  .btn-yes:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 0 80px rgba(255,210,100,0.75), 0 12px 35px rgba(0,0,0,0.55);
+  }
+
+  .btn-blush {
+    background: transparent;
+    border: 1px solid rgba(255,180,200,0.28);
+    color: rgba(255,190,210,0.55);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(13px, 1.6vw, 16px);
+    letter-spacing: 2px;
+    padding: 14px 28px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+  .btn-blush:hover {
+    border-color: rgba(255,180,200,0.6);
+    color: rgba(255,200,220,0.9);
+    background: rgba(255,150,180,0.06);
+  }
+
+  /* ===== SCENE 4 — YES ===== */
+  #scene-yes {
+    background: radial-gradient(ellipse at 50% 50%, #200c18 0%, #090005 70%);
+    flex-direction: column;
+    text-align: center;
+    gap: 22px;
+    padding: 20px;
+  }
+
+  .yes-headline {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(38px, 8vw, 88px);
+    color: var(--gold);
+    letter-spacing: 6px;
+    text-shadow: 0 0 70px rgba(255,210,100,0.75), 0 0 120px rgba(255,180,70,0.4);
+    animation: yesIn 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    opacity: 0;
+  }
+  @keyframes yesIn {
+    from { opacity:0; transform: scale(0.4) rotate(-5deg); }
+    to   { opacity:1; transform: scale(1)   rotate(0deg); }
+  }
+
+  .yes-sub {
+    font-size: clamp(15px, 2.5vw, 24px);
+    color: rgba(255,220,180,0.75);
+    font-style: italic;
+    letter-spacing: 4px;
+    animation: fadeInUp 1.2s ease 0.9s both;
+  }
+
+  .yes-divider {
+    width: 180px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255,200,120,0.45), transparent);
+    animation: fadeInUp 1.2s ease 1.4s both;
+  }
+
+  .yes-poem {
+    max-width: 520px;
+    font-size: clamp(14px, 1.9vw, 20px);
+    color: rgba(255,200,165,0.72);
+    font-style: italic;
+    line-height: 1.9;
+    animation: fadeInUp 1.2s ease 1.8s both;
+  }
+
+  .eternal {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(12px, 1.6vw, 17px);
+    color: rgba(255,175,90,0.5);
+    letter-spacing: 5px;
+    animation: fadeInUp 1.2s ease 2.6s both;
+  }
+
+  .yes-rings {
+    font-size: clamp(28px, 5vw, 50px);
+    animation: fadeInUp 1.2s ease 2s both;
+  }
+
+  /* ===== BLUSH MODAL ===== */
+  .blush-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(20,0,15,0.82);
+    backdrop-filter: blur(8px);
+    z-index: 50000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s;
+  }
+  .blush-overlay.show {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .blush-card {
+    background: rgba(15,0,12,0.97);
+    border: 1px solid rgba(255,150,180,0.2);
+    padding: 48px 56px;
+    max-width: 400px;
+    width: 88%;
+    text-align: center;
+    box-shadow: 0 0 80px rgba(255,100,150,0.15);
+    animation: modalIn 0.5s cubic-bezier(0.23,1,0.32,1) both;
+  }
+  @keyframes modalIn {
+    from { transform: scale(0.85) translateY(20px); opacity:0; }
+    to   { transform: scale(1)    translateY(0);    opacity:1; }
+  }
+  .blush-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 28px;
+    color: #ffb3c8;
+    margin-bottom: 14px;
+  }
+  .blush-card p {
+    font-style: italic;
+    color: rgba(255,175,195,0.6);
+    font-size: 15px;
+    line-height: 1.75;
+    margin-bottom: 26px;
+  }
+  .blush-close-btn {
+    background: transparent;
+    border: 1px solid rgba(255,150,180,0.38);
+    color: rgba(255,180,200,0.8);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    letter-spacing: 3px;
+    padding: 11px 32px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .blush-close-btn:hover {
+    background: rgba(255,150,180,0.1);
+    border-color: rgba(255,150,180,0.7);
+    color: #ffd0e0;
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom cursors -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Particle canvas -->
+<div id="particles-layer"></div>
+
+<!-- Blush modal -->
+<div class="blush-overlay" id="blushOverlay">
+  <div class="blush-card">
+    <h3>Take your time...</h3>
+    <p>
+      I've waited my whole life to find someone like you.<br>
+      I can wait a little longer, my love. 🌹<br><br>
+      But my heart already knows your answer.
+    </p>
+    <button class="blush-close-btn" onclick="closeBlush()">I'm ready now...</button>
+  </div>
+</div>
+
+<!-- ===== SCENE 1: INTRO ===== -->
+<div class="scene active" id="scene-intro">
+  <div class="intro-center">
+    <div class="intro-name">Anusiya</div>
+    <div class="divider-line"></div>
+    <div class="intro-tagline">a moment only for you</div>
+    <div style="margin-top:30px;">
+      <button class="begin-btn" onclick="goScene('scene-proposal')">✦ &nbsp; Begin &nbsp; ✦</button>
+    </div>
+  </div>
+  <div class="candle-row" id="candleRow"></div>
+</div>
+
+<!-- ===== SCENE 2: THE PROPOSAL ===== -->
+<div class="scene" id="scene-proposal">
+  <div class="spotlight-cone"></div>
+  <div class="floor-ellipse"></div>
+
+  <div class="proposal-stage">
+    <div class="person-wrap">
+      <!-- Hand-crafted SVG: 25-year-old man in suit, kneeling on one knee -->
+      <svg class="person-svg" viewBox="0 0 320 440" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="g-skin" cx="40%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#d4956a"/>
+            <stop offset="100%" stop-color="#b87448"/>
+          </radialGradient>
+          <radialGradient id="g-face" cx="38%" cy="32%" r="60%">
+            <stop offset="0%" stop-color="#d8a070"/>
+            <stop offset="100%" stop-color="#c07850"/>
+          </radialGradient>
+          <radialGradient id="g-hair" cx="50%" cy="0%" r="90%">
+            <stop offset="0%" stop-color="#3e2012"/>
+            <stop offset="100%" stop-color="#1c0a05"/>
+          </radialGradient>
+          <radialGradient id="g-suit" cx="28%" cy="25%" r="75%">
+            <stop offset="0%" stop-color="#2e1c38"/>
+            <stop offset="100%" stop-color="#1a0d22"/>
+          </radialGradient>
+          <radialGradient id="g-pant" cx="28%" cy="20%" r="80%">
+            <stop offset="0%" stop-color="#1c1c30"/>
+            <stop offset="100%" stop-color="#0d0d1c"/>
+          </radialGradient>
+          <radialGradient id="g-shadow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(0,0,0,0.5)"/>
+            <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+          </radialGradient>
+          <filter id="f-glow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="4" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="f-soft" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="6" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- Ground shadow -->
+        <ellipse cx="160" cy="425" rx="115" ry="16" fill="url(#g-shadow)" opacity="0.65"/>
+
+        <!-- ===== LEGS ===== -->
+        <!-- Back leg (right, heel raised on ground) -->
+        <path d="M162,248 Q160,290 158,325 Q155,355 168,362 Q182,368 192,348 Q198,325 200,285 L200,252 Z" fill="url(#g-pant)"/>
+        <!-- Back shoe -->
+        <path d="M155,358 Q165,352 185,355 Q200,360 197,368 Q178,376 160,372 Q148,366 155,358 Z" fill="#181818"/>
+        <path d="M155,358 Q165,354 185,356" stroke="#2a2a2a" stroke-width="1" fill="none"/>
+
+        <!-- Front leg (left, kneeling — knee down) -->
+        <path d="M148,248 Q138,278 130,305 Q122,332 128,355 Q136,372 158,372 Q182,370 192,350 Q200,330 198,295 L196,252 Z" fill="url(#g-pant)"/>
+        <!-- Knee highlight -->
+        <ellipse cx="148" cy="330" rx="26" ry="16" fill="#10101e" opacity="0.75"/>
+        <!-- Front shoe (flat on ground) -->
+        <path d="M122,358 Q138,350 164,353 Q188,356 190,365 Q175,376 148,375 Q126,370 122,358 Z" fill="#181818"/>
+        <path d="M122,358 Q140,355 165,354" stroke="#2a2a2a" stroke-width="1" fill="none"/>
+
+        <!-- ===== TORSO / SUIT ===== -->
+        <path d="M118,165 Q112,210 112,252 Q136,270 160,272 Q184,270 208,252 Q208,210 202,165 Z" fill="url(#g-suit)"/>
+        <!-- Suit sheen left -->
+        <path d="M118,170 Q115,210 116,248 Q126,255 132,250 Q128,210 126,170 Z" fill="rgba(255,255,255,0.04)"/>
+        <!-- Suit sheen right -->
+        <path d="M202,170 Q205,210 204,248 Q194,255 188,250 Q192,210 194,170 Z" fill="rgba(0,0,0,0.15)"/>
+        <!-- Lapels -->
+        <path d="M154,168 Q145,182 130,196 Q120,170 140,160 Z" fill="#23102c"/>
+        <path d="M158,168 Q167,182 182,196 Q192,170 172,160 Z" fill="#23102c"/>
+        <!-- Shirt/collar -->
+        <path d="M148,164 Q152,160 158,159 Q164,160 168,164 Q163,172 158,170 Q153,172 148,164 Z" fill="#f0ece6"/>
+        <!-- Tie -->
+        <path d="M153,178 L158,202 L163,178 L158,172 Z" fill="#7a1535"/>
+        <path d="M156,185 L160,202" stroke="#8a1a3e" stroke-width="0.5" fill="none" opacity="0.5"/>
+        <!-- Pocket square hint -->
+        <path d="M194,200 Q197,198 200,200 Q199,205 196,206 Q193,205 194,200 Z" fill="#fff0f5" opacity="0.6"/>
+        <!-- Jacket buttons -->
+        <circle cx="158" cy="218" r="2" fill="rgba(0,0,0,0.3)"/>
+        <circle cx="158" cy="232" r="2" fill="rgba(0,0,0,0.3)"/>
+
+        <!-- ===== ARMS ===== -->
+        <!-- Right arm (natural, slightly back) -->
+        <path d="M202,176 Q228,205 232,235 Q230,246 222,244 Q212,218 198,190 Z" fill="url(#g-suit)"/>
+        <!-- Right hand (natural curl) -->
+        <path d="M220,240 Q230,234 237,228 Q240,222 237,217 Q230,223 224,226 Q220,234 220,240 Z" fill="url(#g-skin)"/>
+
+        <!-- Left arm (extended, offering ring box) -->
+        <path d="M116,176 Q88,202 80,234 Q78,248 90,252 Q104,220 118,194 Z" fill="url(#g-suit)"/>
+        <!-- Left forearm extended further forward -->
+        <path d="M90,248 Q78,244 68,236 Q63,228 67,222 Q76,226 82,236 Q86,244 90,252 Z" fill="url(#g-skin)"/>
+
+        <!-- ===== RING BOX (in left hand) ===== -->
+        <!-- Box base -->
+        <rect x="48" y="205" width="40" height="28" rx="3" fill="#16213e" filter="url(#f-soft)"/>
+        <!-- Box lid (slightly open) -->
+        <path d="M46,208 L88,208 L90,200 Q68,195 46,200 Z" fill="#1a2a50" transform="rotate(-18, 68, 208)"/>
+        <!-- Interior cushion glow -->
+        <ellipse cx="68" cy="215" rx="14" ry="10" fill="rgba(255,240,220,0.15)"/>
+        <!-- Diamond on ring in box -->
+        <path d="M63,212 L68,205 L73,212 L68,219 Z" fill="#e8f8ff" opacity="0.95"/>
+        <circle cx="68" cy="213" r="3.5" fill="rgba(200,240,255,0.5)"/>
+        <!-- Diamond glow pulse -->
+        <ellipse cx="68" cy="213" rx="18" ry="14" fill="rgba(160,130,255,0.18)">
+          <animate attributeName="rx" values="14;22;14" dur="2.2s" repeatCount="indefinite"/>
+          <animate attributeName="ry" values="10;18;10" dur="2.2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.1;0.3;0.1" dur="2.2s" repeatCount="indefinite"/>
+        </ellipse>
+        <!-- Box sparkle -->
+        <circle cx="60" cy="200" r="1.5" fill="white">
+          <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="76" cy="198" r="1" fill="white">
+          <animate attributeName="opacity" values="0;1;0" dur="1.8s" begin="0.6s" repeatCount="indefinite"/>
+        </circle>
+
+        <!-- ===== NECK ===== -->
+        <rect x="149" y="140" width="18" height="22" rx="5" fill="url(#g-skin)"/>
+
+        <!-- ===== HEAD ===== -->
+        <ellipse cx="158" cy="113" rx="32" ry="36" fill="url(#g-face)"/>
+        <!-- Hair top -->
+        <path d="M126,108 Q130,76 158,74 Q186,76 190,108 Q185,88 158,86 Q131,88 126,108 Z" fill="url(#g-hair)"/>
+        <!-- Side hair left -->
+        <path d="M126,108 Q122,122 126,135 Q128,124 131,113 Z" fill="url(#g-hair)"/>
+        <!-- Side hair right -->
+        <path d="M190,108 Q194,122 190,135 Q188,124 185,113 Z" fill="url(#g-hair)"/>
+        <!-- Ear left -->
+        <ellipse cx="126" cy="118" rx="7" ry="9" fill="#bf7a50"/>
+        <path d="M128,112 Q130,118 128,124" stroke="#a06040" stroke-width="1" fill="none"/>
+        <!-- Ear right -->
+        <ellipse cx="190" cy="118" rx="7" ry="9" fill="#bf7a50"/>
+
+        <!-- Eyes (looking up tenderly) -->
+        <!-- Left eye -->
+        <ellipse cx="143" cy="116" rx="7.5" ry="5.5" fill="white"/>
+        <ellipse cx="144" cy="116" rx="4.5" ry="4.5" fill="#2c1504"/>
+        <circle cx="145" cy="114.5" r="1.8" fill="rgba(255,255,255,0.85)"/>
+        <!-- Right eye -->
+        <ellipse cx="173" cy="116" rx="7.5" ry="5.5" fill="white"/>
+        <ellipse cx="174" cy="116" rx="4.5" ry="4.5" fill="#2c1504"/>
+        <circle cx="175" cy="114.5" r="1.8" fill="rgba(255,255,255,0.85)"/>
+
+        <!-- Eyebrows (gentle, raised slightly — hopeful look) -->
+        <path d="M136,107 Q143,104 150,106" stroke="#2a1203" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <path d="M166,106 Q173,104 180,107" stroke="#2a1203" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+
+        <!-- Nose -->
+        <path d="M152,122 Q158,132 164,122" stroke="#a06840" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M152,122 Q152,128 155,130 Q158,132 161,130 Q164,128 164,122" stroke="none" fill="rgba(180,100,60,0.1)"/>
+
+        <!-- Smile (tender, hopeful) -->
+        <path d="M147,134 Q158,144 169,134" stroke="#9a6040" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <!-- Dimples -->
+        <circle cx="144" cy="133" r="2" fill="rgba(180,90,60,0.12)"/>
+        <circle cx="172" cy="133" r="2" fill="rgba(180,90,60,0.12)"/>
+        <!-- Cheek blush -->
+        <ellipse cx="135" cy="126" rx="11" ry="7" fill="rgba(210,90,70,0.12)"/>
+        <ellipse cx="181" cy="126" rx="11" ry="7" fill="rgba(210,90,70,0.12)"/>
+      </svg>
+
+      <!-- Floating hearts layer -->
+      <div class="floating-hearts-layer" id="heartsLayer"></div>
+    </div>
+
+    <!-- Words -->
+    <div class="proposal-words-block">
+      <p class="proposal-quote">
+        <span class="pq-name">Anusiya...</span><br>
+        every step I've ever taken led me here —<br>
+        on one knee, with this ring, and my whole heart.
+      </p>
+      <button class="next-btn" onclick="goScene('scene-ring')">See the ring &nbsp;→</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SCENE 3: THE RING ===== -->
+<div class="scene" id="scene-ring">
+  <div class="ring-stage">
+    <!-- Ring box 3D -->
+    <div class="box-3d-wrapper">
+      <div class="ring-box">
+        <div class="ring-lid"></div>
+        <div class="ring-interior">
+          <div class="ring-3d-wrap">
+            <div class="ring-glow-orb"></div>
+            <div class="ring-body"></div>
+            <div class="diamond-gem"></div>
+            <div class="gem-spark"></div>
+            <div class="gem-spark"></div>
+            <div class="gem-spark"></div>
+            <div class="gem-spark"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- The question -->
+    <div class="ring-label">
+      <h2>"Will you marry me?"</h2>
+      <p>— with everything I am, and everything I'll be</p>
+    </div>
+
+    <!-- Answer buttons -->
+    <div class="answer-row">
+      <button class="btn-yes" onclick="sayYes()">Yes, forever &nbsp;✦</button>
+      <button class="btn-blush" onclick="stillThinking()">I'm blushing...</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SCENE 4: YES ===== -->
+<div class="scene" id="scene-yes">
+  <div class="yes-headline">She said YES ✦</div>
+  <div class="yes-sub">Anusiya &amp; him — forever</div>
+  <div class="yes-divider"></div>
+  <div class="yes-rings">💍 🌹 💍</div>
+  <div class="yes-poem">
+    From this moment, every sunrise belongs to both of us.<br>
+    Every ordinary Tuesday becomes extraordinary<br>
+    simply because I get to share it with you.<br><br>
+    You are my home, my person, my forever.
+  </div>
+  <div class="eternal">✦ &nbsp; forever &amp; always &nbsp; ✦</div>
+</div>
+
+<script>
+  // ===== CURSOR =====
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', e => {
+    dot.style.left  = e.clientX + 'px';
+    dot.style.top   = e.clientY + 'px';
+    ring.style.left = e.clientX + 'px';
+    ring.style.top  = e.clientY + 'px';
+  });
+
+  // ===== BUILD CANDLES =====
+  const candleRow = document.getElementById('candleRow');
+  const candleDefs = [
+    {h:75,d:0}, {h:105,d:0.3}, {h:88,d:0.1}, {h:120,d:0.5}, {h:95,d:0.2},
+    {h:130,d:0.4}, {h:70,d:0.15}, {h:110,d:0.35}, {h:85,d:0.25}, {h:100,d:0.45}
+  ];
+  candleDefs.forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'candle';
+    el.style.animationDelay = c.d + 's';
+    el.innerHTML = `
+      <div class="candle-flame" style="animation-delay:${c.d + Math.random()*0.5}s"></div>
+      <div class="candle-body" style="height:${c.h}px"></div>
+      <div class="candle-drip"></div>
+    `;
+    candleRow.appendChild(el);
+  });
+
+  // ===== PETALS =====
+  const petalLayer = document.getElementById('particles-layer');
+  const PETALS = ['🌸','🌺','🌹','✿','❀','🌷'];
+
+  function spawnPetal() {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.textContent = PETALS[Math.floor(Math.random() * PETALS.length)];
+    p.style.left   = Math.random() * 100 + 'vw';
+    p.style.top    = '0';
+    const dur = 6 + Math.random() * 7;
+    p.style.animationDuration = dur + 's';
+    p.style.animationDelay    = Math.random() * 1.5 + 's';
+    p.style.setProperty('--drift', ((Math.random() - 0.5) * 200) + 'px');
+    p.style.setProperty('--rot',   (300 + Math.random() * 500) + 'deg');
+    p.style.fontSize = (9 + Math.random() * 14) + 'px';
+    p.style.opacity  = (0.5 + Math.random() * 0.5).toString();
+    petalLayer.appendChild(p);
+    setTimeout(() => p.remove(), (dur + 2) * 1000);
+  }
+  setInterval(spawnPetal, 750);
+
+  // ===== STARS =====
+  const STARS = ['✦','✧','⋆','·','✶','⁎'];
+  function spawnStar() {
+    const s = document.createElement('div');
+    s.className = 'star-twinkle';
+    s.textContent = STARS[Math.floor(Math.random() * STARS.length)];
+    s.style.left   = Math.random() * 100 + 'vw';
+    s.style.top    = Math.random() * 100 + 'vh';
+    s.style.color  = `hsl(${25 + Math.random() * 50}, 85%, ${55 + Math.random() * 35}%)`;
+    s.style.fontSize = (8 + Math.random() * 11) + 'px';
+    s.style.animationDuration = (1.8 + Math.random() * 3) + 's';
+    s.style.animationDelay    = (Math.random() * 2) + 's';
+    petalLayer.appendChild(s);
+    setTimeout(() => s.remove(), 9000);
+  }
+  setInterval(spawnStar, 350);
+
+  // ===== HEARTS in proposal scene =====
+  const HEARTS = ['❤️','🩷','💕','💖','🤍','💗'];
+  function spawnHeart() {
+    if (!document.getElementById('scene-proposal').classList.contains('active')) return;
+    const h = document.createElement('div');
+    h.className = 'heart-float';
+    h.textContent = HEARTS[Math.floor(Math.random() * HEARTS.length)];
+    h.style.left   = (60 + Math.random() * 180) + 'px';
+    h.style.bottom = '45%';
+    h.style.setProperty('--hx', ((Math.random() - 0.5) * 90) + 'px');
+    h.style.animationDuration = (2.5 + Math.random() * 2.5) + 's';
+    h.style.animationDelay    = Math.random() * 0.8 + 's';
+    h.style.fontSize = (13 + Math.random() * 10) + 'px';
+    document.getElementById('heartsLayer').appendChild(h);
+    setTimeout(() => h.remove(), 6000);
+  }
+  setInterval(spawnHeart, 1100);
+
+  // ===== SCENE TRANSITIONS =====
+  function goScene(id) {
+    document.querySelectorAll('.scene').forEach(s => {
+      s.classList.remove('active');
+      s.classList.add('exit');
+    });
+    setTimeout(() => {
+      document.querySelectorAll('.scene').forEach(s => s.classList.remove('exit'));
+      document.getElementById(id).classList.add('active');
+    }, 200);
+    if (id === 'scene-ring') {
+      for (let i = 0; i < 12; i++) setTimeout(spawnPetal, i * 120);
+    }
+  }
+
+  // ===== FIREWORKS =====
+  const FW_COLORS = ['#ffd700','#ff6b9d','#ff9f43','#fff3e0','#dbbfff','#a8f0d0','#ffcc88'];
+  function firework(x, y) {
+    const count = 20;
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      p.className = 'fw-particle';
+      const angle = (i / count) * Math.PI * 2;
+      const dist  = 65 + Math.random() * 90;
+      p.style.left   = x + 'px';
+      p.style.top    = y + 'px';
+      p.style.background = FW_COLORS[Math.floor(Math.random() * FW_COLORS.length)];
+      p.style.setProperty('--fx', Math.cos(angle) * dist + 'px');
+      p.style.setProperty('--fy', Math.sin(angle) * dist + 'px');
+      p.style.animationDuration = (0.7 + Math.random() * 0.7) + 's';
+      p.style.width  = (3 + Math.random() * 4) + 'px';
+      p.style.height = (3 + Math.random() * 4) + 'px';
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 1600);
+    }
+  }
+
+  // ===== SAY YES =====
+  function sayYes() {
+    goScene('scene-yes');
+
+    // Cascade of fireworks
+    for (let i = 0; i < 14; i++) {
+      setTimeout(() => {
+        firework(
+          80 + Math.random() * (window.innerWidth  - 160),
+          80 + Math.random() * (window.innerHeight - 160)
+        );
+      }, i * 220);
+    }
+
+    // Flood of petals
+    for (let i = 0; i < 35; i++) setTimeout(spawnPetal, i * 80);
+
+    // Notify via Formspree (same endpoint as birthday page)
+    try {
+      fetch('https://formspree.io/f/xdaywygl', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          subject: '💍 SHE SAID YES! 🎉',
+          message: 'Anusiya accepted the proposal!\n\nTime: ' + new Date().toLocaleString() + '\n\nCongratulations! 🐼💕'
+        })
+      });
+    } catch(e) {}
+
+    // Store in localStorage
+    try {
+      localStorage.setItem('proposalAccepted', JSON.stringify({ accepted: true, time: new Date().toISOString() }));
+    } catch(e) {}
+
+    // Parent page: confetti / celebration (headline stays in scene-yes; close proposal with × on parent)
+    var embedded = false;
+    try { embedded = window.parent && window.parent !== window; } catch (e) { embedded = false; }
+    if (embedded) {
+      try {
+        if (typeof window.parent.proposalYesEmbedded === 'function') {
+          window.parent.proposalYesEmbedded();
+        } else if (typeof window.parent.proposalYes === 'function') {
+          window.parent.proposalYes();
+        }
+      } catch (e) {
+        try {
+          window.parent.postMessage({ t: 'proposal-yes', source: 'proposal-anusiya' }, '*');
+        } catch (e2) {}
+      }
+    }
+  }
+
+  // ===== BLUSH =====
+  function stillThinking() {
+    document.getElementById('blushOverlay').classList.add('show');
+  }
+  function closeBlush() {
+    document.getElementById('blushOverlay').classList.remove('show');
+  }
+</script>
+</body>
+</html>
