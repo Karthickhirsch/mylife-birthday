@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy 21st Birthday Anusiya! 🎂✨</title>
+    <title>Happy 21st Birthday Anusiya! 🐼💕</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -11983,59 +11983,6 @@ Karthick 💕✨`
             
             setTimeout(() => modal.classList.add('show'), 10);
         }
-
-        // ===== BIRTHDAY MODE - REMOVE LOVE SECTIONS AND REDIRECT ON NAME =====
-        document.addEventListener('DOMContentLoaded', function() {
-            // Remove all love sections
-            var loveSectionIds = ['puzzle', 'why-you', 'promises', 'future', 'letter', 'mood-ring', 'confessions', 'bucket-list', 'truth-dare', 'why-different', 'future-letters', 'choose-adventure', 'love-meter', 'fortune', 'love-calculator', 'letter-generator', 'love-quiz', 'love-growth', 'little-things', 'heart-note', 'love-depth-modal', 'afraid-to-lose'];
-            
-            loveSectionIds.forEach(function(id) {
-                var el = document.getElementById(id);
-                if (el) {
-                    el.remove();
-                }
-            });
-            
-            // Hide love nav items
-            loveSectionIds.forEach(function(section) {
-                var navItem = document.querySelector('.nav-dot[data-section="' + section + '"]');
-                if (navItem) navItem.remove();
-            });
-            
-            console.log('Birthday mode: Love sections removed');
-        });
-        
-        // Name detection for redirect
-        var typedText = '';
-        var nameTimeout;
-        
-        document.addEventListener('keydown', function(e) {
-            // Only work after password gate is passed
-            var gate = document.getElementById('password-gate');
-            if (gate && !gate.classList.contains('hidden')) return;
-            
-            // Only track letter keys
-            if (e.key.length === 1 && /[a-zA-Z]/.test(e.key)) {
-                typedText += e.key.toLowerCase();
-                
-                if (typedText.length > 15) {
-                    typedText = typedText.slice(-15);
-                }
-                
-                console.log('Typed:', typedText);
-                
-                // Check for "karthick"
-                if (typedText.includes('karthick')) {
-                    console.log('Name detected! Redirecting...');
-                    window.location.href = 'love.html';
-                }
-                
-                clearTimeout(nameTimeout);
-                nameTimeout = setTimeout(function() {
-                    typedText = '';
-                }, 4000);
-            }
-        });
     </script>
 </body>
 </html>
